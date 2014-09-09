@@ -1,26 +1,22 @@
 // 命令行计算.cpp : 定义控制台应用程序的入口点。
-//
+// 
 
 #include "stdafx.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <windows.h>
-
-float cal(char *s); 
 float f(char *s,int start,int end);
 
 int _tmain(int argc, _TCHAR* argv[])
 {
 	char c[100];
-	float result;
 	int n;
+	printf("键入表达式以计算，无输入内容即退出\n");
 	while(1) {
 		printf("> ");
-		gets(c);
+		gets(c);                             //输入
 		if((n=strlen(c))==0) break;
-		result = f(c ,0,n-1);
-		printf("\n结果：%.2f\n",result);
+		printf(">%.2f\n",f(c ,0,n-1));      //计算并显示
 	} 
 
 	system("pause");
@@ -31,15 +27,15 @@ int _tmain(int argc, _TCHAR* argv[])
 float f(char *s,int start,int end){
 	float data[2][128],result;
 	char syn[2][128];
-	char *cs,*ce;
+	char *cs;
 	int ins,ine,len;
 	int stack;
 	int i,j,k,p,t,ns,te;
 	int flag=0;   //第一位有负号则为1
 
 	len = end-start;
-	cs=s+start;
-	ce=s+end;//定义需处理的开头和结尾
+	cs=s+start;//定义需处理的开头和长度
+	
 	if (cs[0]=='-') {
 		flag=1;
 		cs++;
