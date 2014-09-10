@@ -50,11 +50,12 @@ float f(char *s,int start,int end){
 				if(cs[j]=='('){
 					stack++;
 				}
-				if(cs[j]==')'){
+				else if(cs[j]==')'){
 					stack--;
 				}
+				if (stack==0) break;
 			}
-			j--;//j回位
+			if(j==(len+1)) j--;//j回位
 			ine=start+j-1;
 			if(stack!=0) {
 				printf("\n括号匹配错误，即将退出！参数%d\n",stack);
@@ -71,9 +72,9 @@ float f(char *s,int start,int end){
 			sscanf(cs+j,"%c",&syn[0][k]);
 			k++;
 		}
-		else if('0'<cs[j]&&'9'>cs[j]||cs[j]=='.'){            //读数字
+		else if('0'<=cs[j]&&'9'>=cs[j]||cs[j]=='.'){            //读数字
 			sscanf(cs+j,"%f",&data[0][i]);
-			while('0'<cs[j]&&'9'>cs[j]||cs[j]=='.'){
+			while('0'<=cs[j]&&'9'>=cs[j]||cs[j]=='.'){
 				j++;
 			}
 			j--; //while复位
@@ -82,6 +83,9 @@ float f(char *s,int start,int end){
 	}
 	if(flag==1) data[0][0]=-data[0][0]; //首位负数处理
 	//读取完毕 总数字数I 总符号数K (k=i-1)
+
+
+
 	//开始乘除计算，以符号循环 data[t][] syn[t][p] i为数的数量 k为符号的数量
 	for(p=0,t=0,i;p<k;p++){ 
 		if(syn[t][p]=='*'||syn[t][p]=='/'){
@@ -103,6 +107,7 @@ float f(char *s,int start,int end){
 
 
 	}
+
 	//计算加减法
 	result = data[t][0];
 	for(p=0;p<k;p++){
