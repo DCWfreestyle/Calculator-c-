@@ -30,7 +30,7 @@ float f(char *s,int start,int end){
 	char *cs;
 	int ins,ine,len;
 	int stack;
-	int i,j,k,p,t,ns,te;
+	int i,j,k,p,t,m;
 	int flag=0;   //第一位有负号则为1
 
 	len = end-start;
@@ -85,28 +85,32 @@ float f(char *s,int start,int end){
 	//读取完毕 总数字数I 总符号数K (k=i-1)
 
 
-
-	//开始乘除计算，以符号循环 data[t][] syn[t][p] i为数的数量 k为符号的数量
-	for(p=0,t=0,i;p<k;p++){ 
+	//开始乘除计算，以符号循环 data[t][] syn[t][] i为数的数量 k为符号的数量
+	t=0;
+	p=0;
+	while(p<k){
 		if(syn[t][p]=='*'||syn[t][p]=='/'){
-			for(int m=0,n=0,tsyn=0;m<i;m++,n++){//移动，n跟踪原来的符号，m跟踪之后的数，tsyn跟踪符号
-				if(n==p) {
-					n++; //跳一位
-					if(syn[t][p]=='*') data[t+1][m]=data[t][n-1]*data[t][n];//替换
-					else data[t+1][m]=data[t][n-1]/data[t][n];
+			int step=0;
+			m=(t+1)%2;
+			for(int tpr=0;tpr<=k;tpr++){
+				if(tpr==p) {
+					if(syn[t][p]=='*') data[m][tpr]=data[t][tpr]*data[t][tpr+1];
+					else data[m][tpr]=data[t][tpr]/data[t][tpr+1];
+					step=1;
 				}
-				else {
-					data[t+1][m]=data[t][n];
-					if(n<k) syn[t+1][tsyn]=syn[t][n];
+				else{
+					if(tpr<k) syn[m][tpr-step]=syn[t][tpr];
+					data[m][tpr]=data[t][tpr+step];
 				}
 			}
-			t=(t+1)%2;
-			i--;         //待读数减一
-			k--;		//符号减一
+			t=m;
+			k--;
+			p=0;
 		}
-
-
+		else p++;
 	}
+
+
 
 	//计算加减法
 	result = data[t][0];

@@ -28,3 +28,28 @@ StdAfx.h, StdAfx.cpp
 应用程序向导使用“TODO:”注释来指示应添加或自定义的源代码部分。
 
 /////////////////////////////////////////////////////////////////////////////
+for(p=0,t=0,i;p<k;p++){ 
+		if(syn[t][p]=='*'||syn[t][p]=='/'){
+			for(int m=0,n=0,tsyn=0,tdat=0;n<=k;m++,n++){//移动，n跟踪原来的符号，m跟踪原来的数，tsyn跟踪符号,tdat跟踪数
+				if(n==p) {
+					if(syn[t][p]=='*') data[t+1][tdat]=data[t][m]*data[t][m+1];//替换
+					else data[t+1][m]=data[t][n]/data[t][n+1];
+					m++;
+					tdat++;
+				}
+				else {
+					data[t+1][tdat]=data[t][m];
+					tdat++;
+					if(n<=k) {
+						syn[t+1][tsyn]=syn[t][n];
+						tsyn++;
+					}
+				}
+			}
+			t=(t+1)%2;
+			i--;         //待读数减一
+			k--;		//符号减一
+		}
+
+
+	}
